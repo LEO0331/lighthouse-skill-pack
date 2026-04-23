@@ -1,7 +1,6 @@
 (function () {
   "use strict";
 
-  const data = window.SKILLS_DATA || [];
   const skillList = document.getElementById("skill-list");
   const skillCount = document.getElementById("skill-count");
   const selectedSkill = document.getElementById("selected-skill");
@@ -11,8 +10,10 @@
   const searchInput = document.getElementById("skill-search");
   const statusEl = document.getElementById("status");
 
-  let filtered = data.slice();
-  let activeName = filtered[0] ? filtered[0].name : "";
+  let allSkills = [];
+  let filtered = [];
+  let activeName = "";
+  const contentCache = new Map();
 
   function setStatus(message) {
     statusEl.textContent = message;
@@ -22,7 +23,21 @@
     return filtered.find((item) => item.name === activeName) || filtered[0] || null;
   }
 
-  function setActiveByName(name) {
+  async function loadSkillContent(item) {
+    if (!item) return "";
+    if (contentCache.has(item.path)) return contentCache.get(item.path);
+
+    const response = await fetch("./" + item.path);
+    if (!response.ok) {
+      throw new Error("Failed to load " + item.path);
+    }
+
+    const content = await response.text();
+    contentCache.set(item.path, content);
+    return content;
+  }
+
+  async function setActiveByName(name) {
     activeName = name;
     const item = getActiveItem();
 
@@ -34,8 +49,16 @@
     }
 
     selectedSkill.textContent = item.name + " - " + item.description;
-    contentEl.textContent = item.content;
-    setStatus("");
+    setStatus("Loading " + item.name + "...");
+
+    try {
+      const content = await loadSkillContent(item);
+      contentEl.textContent = content;
+      setStatus("");
+    } catch (_err) {
+      contentEl.textContent = "";
+      setStatus("Could not load skill markdown.");
+    }
 
     const buttons = skillList.querySelectorAll(".skill-btn");
     buttons.forEach((btn) => {
@@ -60,7 +83,7 @@
     btn.appendChild(title);
     btn.appendChild(desc);
     btn.addEventListener("click", function () {
-      setActiveByName(item.name);
+      void setActiveByName(item.name);
     });
 
     return btn;
@@ -74,17 +97,16 @@
     });
 
     skillCount.textContent = String(filtered.length) + " skills";
-    setActiveByName(activeName);
+    void setActiveByName(activeName);
   }
 
   function applyFilter(query) {
     const needle = query.trim().toLowerCase();
-    filtered = data.filter((item) => {
+    filtered = allSkills.filter((item) => {
       if (!needle) return true;
       return (
         item.name.toLowerCase().includes(needle) ||
-        item.description.toLowerCase().includes(needle) ||
-        item.content.toLowerCase().includes(needle)
+        item.description.toLowerCase().includes(needle)
       );
     });
 
@@ -100,7 +122,8 @@
     if (!item) return;
 
     try {
-      await navigator.clipboard.writeText(item.content);
+      const content = await loadSkillContent(item);
+      await navigator.clipboard.writeText(content);
       setStatus("Copied " + item.name + " to clipboard.");
       copyBtn.textContent = "Copied";
       setTimeout(function () {
@@ -115,24 +138,42 @@
     }
   }
 
-  function downloadCurrentSkill() {
+  async function downloadCurrentSkill() {
     const item = getActiveItem();
     if (!item) return;
 
-    const blob = new Blob([item.content], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = item.name + ".md";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    setStatus("Downloaded " + item.name + ".md");
+    try {
+      const content = await loadSkillContent(item);
+      const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = item.name + ".md";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded " + item.name + ".md");
+    } catch (_err) {
+      setStatus("Download failed.");
+    }
   }
 
-  copyBtn.addEventListener("click", copyCurrentSkill);
-  downloadBtn.addEventListener("click", downloadCurrentSkill);
+  async function init() {
+    const response = await fetch("./skills-index.json");
+    allSkills = await response.json();
+    filtered = allSkills.slice();
+    activeName = filtered[0] ? filtered[0].name : "";
+    renderSkillCards();
+  }
+
+  copyBtn.addEventListener("click", function () {
+    void copyCurrentSkill();
+  });
+
+  downloadBtn.addEventListener("click", function () {
+    void downloadCurrentSkill();
+  });
 
   if (searchInput) {
     searchInput.addEventListener("input", function () {
@@ -140,5 +181,5 @@
     });
   }
 
-  renderSkillCards();
+  void init();
 })();

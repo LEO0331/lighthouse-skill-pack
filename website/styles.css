@@ -28,16 +28,6 @@ body {
   min-height: 100vh;
 }
 
-.bg-glow {
-  pointer-events: none;
-  position: fixed;
-  inset: -20% 0 auto -10%;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(122, 240, 193, 0.15) 0%, transparent 62%);
-  filter: blur(32px);
-  z-index: 0;
-}
-
 .wrap {
   width: min(1140px, calc(100% - 2rem));
   margin: 0 auto;

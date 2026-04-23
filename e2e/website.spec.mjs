@@ -65,8 +65,10 @@ test("copy action + interaction flow reaches >=85% JS coverage for app.js", asyn
 
   await page.goto("/");
   await page.getByRole("button", { name: "lighthouse-react-vite" }).click();
+  await expect(page.locator("#skill-content")).toContainText("React + Vite");
   await page.getByRole("searchbox", { name: "Search skills" }).fill("wordpress");
   await page.getByRole("button", { name: "lighthouse-wordpress" }).click();
+  await expect(page.locator("#skill-content")).toContainText("WordPress");
   await page.getByRole("searchbox", { name: "Search skills" }).fill("");
 
   await page.getByRole("button", { name: "Copy" }).click();
