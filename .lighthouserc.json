@@ -3,6 +3,9 @@
     "collect": {
       "numberOfRuns": 2,
       "staticDistDir": "./website",
+      "settings": {
+        "chromeFlags": "--headless=new --no-sandbox --disable-dev-shm-usage"
+      },
       "url": [
         "http://localhost/index.html"
       ]

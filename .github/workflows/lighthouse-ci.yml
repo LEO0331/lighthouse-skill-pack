@@ -21,4 +21,12 @@ jobs:
         run: npm install -g @lhci/cli@0.15.x
 
       - name: Run Lighthouse CI
-        run: lhci autorun --config=.lighthouserc.json
+        run: lhci autorun --config=.lighthouserc.json --verbose
+
+      - name: Upload Lighthouse debug artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouseci-debug
+          path: .lighthouseci/
+          if-no-files-found: warn
