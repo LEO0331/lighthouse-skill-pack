@@ -1,0 +1,14 @@
+{
+  "name": "lighthouse-skill-pack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reusable Lighthouse optimization skills with static viewer and Playwright E2E coverage gate.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:coverage": "playwright test && node tools/e2e/report-coverage.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

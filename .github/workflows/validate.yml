@@ -1,0 +1,44 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate shell script syntax
+        run: |
+          bash -n installers/install-codex.sh
+          bash -n installers/install-claude.sh
+
+      - name: Regenerate website data
+        run: python3 website/scripts/build-skills-data.py
+
+      - name: Run E2E tests with coverage gate (>=85%)
+        run: npm run test:e2e:coverage
+
+      - name: Fail on generated diff
+        run: git diff --exit-code website/skills-data.js website/skills-index.json

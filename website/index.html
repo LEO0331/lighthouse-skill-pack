@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lighthouse Skill Pack</title>
+    <meta
+      name="description"
+      content="Browse and install deterministic Lighthouse optimization skills for Codex and Claude Code."
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <header class="site-header wrap">
+      <p class="eyebrow">Open-source performance toolkit</p>
+      <h1>Design your Lighthouse workflow like a performance release.</h1>
+      <p class="intro">
+        Explore stack-specific <code>SKILL.md</code> playbooks, copy instantly, and install for Codex or
+        Claude Code in minutes.
+      </p>
+      <div class="hero-meta" aria-label="Supported stacks">
+        <span>Core</span>
+        <span>Static HTML</span>
+        <span>React + Vite</span>
+        <span>Next.js</span>
+        <span>WordPress</span>
+      </div>
+    </header>
+
+    <main class="wrap layout">
+      <section class="panel install" aria-labelledby="install-title">
+        <h2 id="install-title">Install</h2>
+        <p><strong>Claude Code:</strong> copy folders to <code>~/.claude/skills/</code></p>
+        <p><strong>Codex:</strong> copy folders to <code>~/.codex/skills/</code></p>
+        <pre><code>bash installers/install-claude.sh
+bash installers/install-codex.sh
+pwsh ./installers/install.ps1 -Target codex</code></pre>
+      </section>
+
+      <section class="panel overview" aria-labelledby="overview-title">
+        <h2 id="overview-title">Optimization Sequence</h2>
+        <ol>
+          <li>LCP</li>
+          <li>CLS</li>
+          <li>JS execution / TBT / INP</li>
+          <li>Render-blocking resources</li>
+          <li>Fonts</li>
+          <li>Caching / delivery</li>
+          <li>SEO / accessibility follow-up</li>
+        </ol>
+      </section>
+
+      <section class="panel skills" aria-labelledby="skills-title">
+        <div class="skills-head">
+          <h2 id="skills-title">Skill Library</h2>
+          <span id="skill-count" class="badge"></span>
+        </div>
+        <label class="search" for="skill-search">
+          <span>Search skills</span>
+          <input id="skill-search" name="skill-search" type="search" placeholder="Filter by stack or keyword" />
+        </label>
+        <div id="skill-list" class="skill-list"></div>
+      </section>
+
+      <section class="panel viewer" aria-labelledby="viewer-title">
+        <div class="viewer-head">
+          <div>
+            <h2 id="viewer-title">Skill Markdown</h2>
+            <p id="selected-skill" class="selected-skill"></p>
+          </div>
+          <div class="actions">
+            <button id="copy-btn" type="button">Copy</button>
+            <button id="download-btn" type="button">Download .md</button>
+          </div>
+        </div>
+        <pre id="skill-content" class="code-view" tabindex="0"></pre>
+        <p id="status" class="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer class="site-footer wrap">
+      <p>MIT licensed. GitHub Pages-ready. Built for practical Lighthouse execution.</p>
+    </footer>
+
+    <script src="./skills-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
