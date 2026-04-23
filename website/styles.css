@@ -74,6 +74,16 @@ body {
   max-width: 70ch;
 }
 
+.hero-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #0f1b35;
+}
+
 code {
   font-family: "Menlo", "Consolas", "Liberation Mono", monospace;
 }
@@ -188,6 +198,7 @@ code {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 0.7rem;
+  min-height: 272px;
 }
 
 .skill-btn {
@@ -255,6 +266,7 @@ button:focus-visible {
   margin: 0;
   color: #ccd8f7;
   font-size: 0.9rem;
+  min-height: 1.35rem;
 }
 
 .viewer-head h2 {

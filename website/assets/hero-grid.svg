@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-label="Lighthouse skill pack visual banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16305f"/>
+      <stop offset="1" stop-color="#0c1831"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7af0c1" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ffd166" stop-opacity="0.45"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" fill="url(#bg)" rx="16"/>
+  <g stroke="url(#line)" stroke-width="1" fill="none">
+    <path d="M0 54h1200"/>
+    <path d="M0 108h1200"/>
+    <path d="M0 162h1200"/>
+    <path d="M0 216h1200"/>
+    <path d="M0 270h1200"/>
+    <path d="M0 324h1200"/>
+    <path d="M120 0v360"/>
+    <path d="M240 0v360"/>
+    <path d="M360 0v360"/>
+    <path d="M480 0v360"/>
+    <path d="M600 0v360"/>
+    <path d="M720 0v360"/>
+    <path d="M840 0v360"/>
+    <path d="M960 0v360"/>
+    <path d="M1080 0v360"/>
+  </g>
+  <g fill="#7af0c1">
+    <circle cx="240" cy="162" r="10"/>
+    <circle cx="480" cy="108" r="10"/>
+    <circle cx="720" cy="216" r="10"/>
+    <circle cx="960" cy="162" r="10"/>
+  </g>
+  <polyline points="240,162 480,108 720,216 960,162" stroke="#ffd166" stroke-width="4" fill="none"/>
+</svg>
