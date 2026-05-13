@@ -42,7 +42,7 @@ Each skill must:
 
 - Keep site static (no framework build step).
 - Keep JavaScript modular and readable.
-- Update `website/skills-data.js` when skill markdown changes.
+- Regenerate website artifacts with `python3 website/scripts/build-skills-data.py` when skill markdown changes.
 
 ## Pull request checklist
 

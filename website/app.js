@@ -14,6 +14,7 @@
   let filtered = [];
   let activeName = "";
   const contentCache = new Map();
+  let currentSelectionId = 0;
 
   function setStatus(message) {
     statusEl.textContent = message;
@@ -39,6 +40,7 @@
 
   async function setActiveByName(name) {
     activeName = name;
+    const selectionId = ++currentSelectionId;
     const item = getActiveItem();
 
     if (!item) {
@@ -53,9 +55,11 @@
 
     try {
       const content = await loadSkillContent(item);
+      if (selectionId !== currentSelectionId) return;
       contentEl.textContent = content;
       setStatus("");
     } catch (_err) {
+      if (selectionId !== currentSelectionId) return;
       contentEl.textContent = "";
       setStatus("Could not load skill markdown.");
     }
@@ -160,11 +164,22 @@
   }
 
   async function init() {
-    const response = await fetch("./skills-index.json");
-    allSkills = await response.json();
-    filtered = allSkills.slice();
-    activeName = filtered[0] ? filtered[0].name : "";
-    renderSkillCards();
+    try {
+      const response = await fetch("./skills-index.json");
+      if (!response.ok) {
+        throw new Error("Failed to load skills index.");
+      }
+
+      allSkills = await response.json();
+      filtered = allSkills.slice();
+      activeName = filtered[0] ? filtered[0].name : "";
+      renderSkillCards();
+    } catch (_err) {
+      skillCount.textContent = "0 skills";
+      selectedSkill.textContent = "Skill library unavailable.";
+      contentEl.textContent = "";
+      setStatus("Could not load the skill index.");
+    }
   }
 
   copyBtn.addEventListener("click", function () {

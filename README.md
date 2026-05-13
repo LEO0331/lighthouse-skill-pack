@@ -113,8 +113,9 @@ python3 website/scripts/build-skills-data.py
 
 Generated outputs:
 
-- `website/skills-data.js` (browser data source)
-- `website/skills-index.json` (optional downstream/package distribution format)
+- `website/skills-index.json` (metadata consumed at startup)
+- `website/skills-md/*.md` (lazily loaded markdown payloads)
+- `website/skills-data.js` (legacy generated artifact kept for compatibility)
 
 ## E2E testing
 

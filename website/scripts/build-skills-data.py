@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -57,6 +58,8 @@ def collect() -> list[dict[str, str]]:
 
 def main() -> None:
     raw_data = collect()
+    if SKILLS_MD_DIR.exists():
+        shutil.rmtree(SKILLS_MD_DIR)
     SKILLS_MD_DIR.mkdir(parents=True, exist_ok=True)
 
     data: list[dict[str, str]] = []
